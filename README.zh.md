@@ -53,13 +53,25 @@ agent-browser auth login my-app
 需要：`bw` CLI 已 `bw login`；桌面环境有 `zenity`（无桌面也可用，走 TUI）。
 
 ```bash
-# 方式一：作为 pi package
+# pi：从 GitHub 装成一个 package（升级只需一条命令）
 pi install git:github.com/hljhljhlj/pi-bitwarden
 
-# 方式二：开发安装（仓库内改动 + /reload 即生效）
+# omp：同一个仓库，用 git+ssh 形式（bun 无法用 https 拉私有库）
+omp plugin install git+ssh://git@github.com/hljhljhlj/pi-bitwarden.git
+
+# 开发安装（仓库内改动 + /reload 即生效）
 git clone https://github.com/hljhljhlj/pi-bitwarden ~/Project/pi-bitwarden
-~/Project/pi-bitwarden/install.sh   # symlink 到 ~/.pi/agent/extensions/
+~/Project/pi-bitwarden/install.sh --dev   # symlink 到 ~/.pi/agent/extensions/
 ```
+
+升级：
+
+```bash
+pi update git:github.com/hljhljhlj/pi-bitwarden
+omp plugin install git+ssh://git@github.com/hljhljhlj/pi-bitwarden.git --force
+```
+
+不要同时保留 `~/.pi/agent/extensions/bitwarden.ts` symlink 和 package 安装：两者会同时加载，每个 `bw_*` 工具会出现两次。
 
 ## 配置 `~/.bw/pi-extension/config.json`
 

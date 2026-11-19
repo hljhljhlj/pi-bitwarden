@@ -53,13 +53,26 @@ agent-browser auth login my-app
 Requires: the `bw` CLI, logged in (`bw login`); `zenity` for desktop prompts (without a desktop the TUI fallback works).
 
 ```bash
-# Option 1: as a pi package
+# pi: install from GitHub (package install, so upgrades are one command)
 pi install git:github.com/hljhljhlj/pi-bitwarden
 
-# Option 2: dev install (edits in the repo take effect on /reload)
+# omp: same repo, git+ssh form (bun cannot fetch private repos over https)
+omp plugin install git+ssh://git@github.com/hljhljhlj/pi-bitwarden.git
+
+# dev install (edits in the repo take effect on /reload)
 git clone https://github.com/hljhljhlj/pi-bitwarden ~/Project/pi-bitwarden
-~/Project/pi-bitwarden/install.sh   # symlinks into ~/.pi/agent/extensions/
+~/Project/pi-bitwarden/install.sh --dev   # symlinks into ~/.pi/agent/extensions/
 ```
+
+Upgrade:
+
+```bash
+pi update git:github.com/hljhljhlj/pi-bitwarden
+omp plugin install git+ssh://git@github.com/hljhljhlj/pi-bitwarden.git --force
+```
+
+Do not keep a `~/.pi/agent/extensions/bitwarden.ts` symlink next to the package
+install: both load, and every `bw_*` tool appears twice.
 
 ## Config `~/.bw/pi-extension/config.json`
 
