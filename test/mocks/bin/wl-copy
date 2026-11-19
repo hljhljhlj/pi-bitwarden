@@ -1,0 +1,6 @@
+#!/bin/bash
+# Mock wl-copy: capture stdin into the mock clipboard file.
+MOCK_DIR="${BW_MOCK_DIR:-/tmp/bw-mock-state}"
+mkdir -p "$MOCK_DIR"
+if [[ "${1:-}" == "-c" ]]; then : > "$MOCK_DIR/clipboard"; exit 0; fi
+cat > "$MOCK_DIR/clipboard"

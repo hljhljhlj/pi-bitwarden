@@ -1,0 +1,20 @@
+#!/bin/bash
+# Mock zenity: master-password prompt -> "testmaster"; questions -> allow (deny with BW_MOCK_DENY=1).
+# Counts prompts into $BW_MOCK_DIR for assertions; traces all calls to zenity-trace.log.
+MOCK_DIR="${BW_MOCK_DIR:-/tmp/bw-mock-state}"
+mkdir -p "$MOCK_DIR"
+echo "zenity pid=$$ deny=${BW_MOCK_DENY:-0} args=[$*]" >> "$MOCK_DIR/zenity-trace.log"
+for a in "$@"; do
+	if [[ "$a" == "--password"* ]]; then
+		echo "$(( $(cat "$MOCK_DIR/pw-prompts" 2>/dev/null || echo 0) + 1 ))" > "$MOCK_DIR/pw-prompts"
+		echo "testmaster"
+		exit 0
+	fi
+	if [[ "$a" == "--question"* ]]; then
+		local_n="$(cat "$MOCK_DIR/questions.n" 2>/dev/null || echo 0)"
+		echo "$(( local_n + 1 ))" > "$MOCK_DIR/questions.n"
+		[[ "${BW_MOCK_DENY:-0}" == "1" ]] && exit 1
+		exit 0
+	fi
+done
+exit 0

@@ -1,0 +1,25 @@
+{
+  "name": "pi-bitwarden",
+  "version": "0.1.0",
+  "description": "Bitwarden secret delivery for the pi coding agent: inject vault secrets into bash env / clipboard without exposing them to the LLM.",
+  "type": "module",
+  "pi": {
+    "extensions": ["./bitwarden.ts"]
+  },
+  "scripts": {
+    "test": "bash test/run.sh"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hljhljhlj/pi-bitwarden.git"
+  },
+  "keywords": [
+    "pi",
+    "pi-coding-agent",
+    "bitwarden",
+    "secrets",
+    "security",
+    "extension"
+  ]
+}
